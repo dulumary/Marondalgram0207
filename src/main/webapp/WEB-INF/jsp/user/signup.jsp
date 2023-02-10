@@ -57,6 +57,44 @@
 	<script>
 		$(document).ready(function() {
 			
+			var isDuplicateCheck = false;
+			var isDuplicateId = true;
+			
+			$("#isDuplicateBtn").on("click", function() {
+				let id = $("#loginIdInput").val();
+				
+				if(id == "") {
+					alert("아이디를 입력하세요");
+					return;
+				}
+				
+				$.ajax({
+					type:"get"
+					, url:"/user/duplicate_id"
+					, data:{"loginId":id}
+					, success:function(data) {
+						isDuplicateCheck = true;
+						
+						if(data.is_duplicate) {  // 중복된 상태
+							
+							isDuplicateId = true;
+							$("#duplicateText").removeClass("d-none");
+							$("#availableText").addClass("d-none");
+						} else { // 중복 안된 상태
+							
+							isDuplicateId = false;
+							$("#availableText").removeClass("d-none");
+							$("#duplicateText").addClass("d-none");
+						}
+						
+					}
+					, error:function() {
+						alert("중복확인 에러");
+					}
+				});
+				
+			});
+			
 			
 			$("#signUpBtn").on("click", function() {
 				let id = $("#loginIdInput").val();
@@ -68,6 +106,20 @@
 				if(id == "") {
 					alert("아이디를 입력하세요");
 					return;
+				}
+				
+				// 중복체크 여부 유효성 검사 
+				//if(isDuplicateCheck == false) {
+				if(!isDuplicateCheck) {
+					alert("아이디 중복확인을 해주세요");
+					return ;
+				}
+				
+				// 아이디 중복여부 유효성 검사 
+				// 중복된 상태인 경우 얼럿창 노출
+				if(isDuplicateId) {
+					alert("중복된 아이디 입니다");
+					return ;
 				}
 				
 				if(password == "") {

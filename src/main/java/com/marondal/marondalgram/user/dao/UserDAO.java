@@ -11,5 +11,10 @@ public interface UserDAO {
 			, @Param("password") String password
 			, @Param("name") String name
 			, @Param("email") String email);
+	
+	// loginId 가 일치하는 행이 몇개인지 확인 
+	
+	public int selectCountByLoginId(@Param("loginId") String loginId);
+
 
 }
