@@ -48,6 +48,43 @@
 	<script>
 		$(document).ready(function() {
 			
+			$("#loginForm").on("submit", function(e) {
+			//$("#loginBtn").on("click", function() {
+				
+				// 해당 이벤트의 기능을 모두 취소한다
+				e.preventDefault();
+				
+				let loginId = $("#loginIdInput").val();
+				let password = $("#passwordInput").val();
+				
+				if(loginId == "") {
+					alert("아이디를 입력하세요 ");
+					return ;
+				}
+				
+				if(password == "") {
+					alert("비밀번호를 입력하세요");
+					return ;
+				}
+				
+				$.ajax({
+					type:"post"
+					, url:"/user/signin"
+					, data:{"loginId":loginId, "password":password}
+					, success:function(data) {
+						
+						if(data.result == "success") {
+							location.href = "/post/timeline/view";
+						} else {
+							alert("아이디/패스워드를 확인해주세요");
+						}
+						
+					}
+					, error:function() {
+						alert("로그인 에러");
+					}
+				});
+			});
 			
 		});
 	

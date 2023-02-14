@@ -60,6 +60,8 @@
 			var isDuplicateCheck = false;
 			var isDuplicateId = true;
 			
+			
+			
 			$("#isDuplicateBtn").on("click", function() {
 				let id = $("#loginIdInput").val();
 				

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.marondal.marondalgram.common.EncryptUtils;
 import com.marondal.marondalgram.user.dao.UserDAO;
+import com.marondal.marondalgram.user.model.User;
 
 @Service
 public class UserBO {
@@ -36,6 +37,14 @@ public class UserBO {
 		
 		return count != 0;
 		
+	}
+	
+	
+	public User getUser(String loginId, String password) {
+		
+		String encryptPassword = EncryptUtils.md5(password);
+		
+		return userDAO.selectUser(loginId, encryptPassword);
 	}
 	
 
