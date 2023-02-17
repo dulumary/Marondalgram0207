@@ -40,7 +40,7 @@
 					<!-- 카드 -->
 					<div class="card mt-4">
 						<div class="d-flex justify-content-between p-2">
-							<div>${post.userId }</div>
+							<div>${post.userName }</div>
 							<div><i class="bi bi-three-dots"></i></div>
 						</div>
 						<div>
@@ -52,7 +52,7 @@
 						</div>
 						
 						<div class="p-2">
-							<b>${post.userId }</b> ${post.content }
+							<b>${post.userName }</b> ${post.content }
 						</div>
 						
 						<!--  댓글 들 -->
