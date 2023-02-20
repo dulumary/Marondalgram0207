@@ -60,5 +60,9 @@ public class PostBO {
 		
 		
 	}
+	
+	public int addLike(int userId, int postId) {
+		return postDAO.insertLike(userId, postId);
+	}
 
 }

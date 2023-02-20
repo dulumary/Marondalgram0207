@@ -48,7 +48,7 @@
 						</div>
 						
 						<div class="p-2">
-							<i class="bi bi-heart"></i> 좋아요 11개
+							<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> 좋아요 11개
 						</div>
 						
 						<div class="p-2">
@@ -92,6 +92,30 @@
 	
 	<script>
 		$(document).ready(function() {
+			
+			
+			$(".heart-btn").on("click", function() {
+				
+				// 해당하는 버튼에 대응되는 post id 를 얻어와야한다. 
+				let id = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get"
+					, url:"/post/like"
+					, data:{"postId":id}
+					, success:function(data) {
+						if(data.result == "success") {
+							location.reload();
+						} else {
+							alert("좋아요 실패");
+						}
+					}
+					, error:function() {
+						alert("좋아요 에러");
+					}
+				});
+				
+			});
 			
 			$("#uploadBtn").on("click", function() {
 				

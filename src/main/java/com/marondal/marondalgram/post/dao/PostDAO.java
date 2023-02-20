@@ -16,5 +16,9 @@ public interface PostDAO {
 			, @Param("imagePath") String imagePath);
 	
 	public List<Post> selectPostList();
+	
+	public int insertLike(
+			@Param("userId") int userId
+			, @Param("postId") int postId);
 
 }
