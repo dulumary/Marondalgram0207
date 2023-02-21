@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.marondal.marondalgram.common.FileManagerService;
 import com.marondal.marondalgram.post.dao.PostDAO;
+import com.marondal.marondalgram.post.like.bo.LikeBO;
 import com.marondal.marondalgram.post.model.Post;
 import com.marondal.marondalgram.post.model.PostDetail;
 import com.marondal.marondalgram.user.bo.UserBO;
@@ -23,6 +24,9 @@ public class PostBO {
 	@Autowired
 	private UserBO userBO;
 	
+	@Autowired
+	private LikeBO likeBO;
+	
 	public int addPost(int userId, String content, MultipartFile file) {
 		// 파일을 저장하고, 접근 경로를 만든다. 
 		
@@ -32,7 +36,7 @@ public class PostBO {
 	}
 	
 	
-	public List<PostDetail> getPostList() {
+	public List<PostDetail> getPostList(int userId) {
 		
 		List<Post> postList = postDAO.selectPostList();
 		
@@ -47,8 +51,14 @@ public class PostBO {
 			postDetail.setImagePath(post.getImagePath());
 			
 			User user = userBO.getUserById(post.getUserId());
+			// 좋아요 개수 조회 
+			int likeCount = likeBO.likeCount(post.getId());
 			
+			// 좋아요 여부 조회
+			boolean isLike = likeBO.isLike(post.getId(), userId);
+			postDetail.setLike(isLike);
 			
+			postDetail.setLikeCount(likeCount);
 			// userName 값을 저장한다. 
 			postDetail.setUserName(user.getName());
 			

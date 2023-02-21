@@ -48,7 +48,8 @@
 						</div>
 						
 						<div class="p-2">
-							<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> 좋아요 11개
+							${post.like }
+							<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i> 좋아요 ${post.likeCount }개
 						</div>
 						
 						<div class="p-2">
