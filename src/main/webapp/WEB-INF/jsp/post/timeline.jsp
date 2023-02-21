@@ -63,8 +63,8 @@
 							<div><b>조세호</b> 엌!</div>
 							
 							<div class="d-flex">
-								<input type="text" class="form-control">
-								<button type="button" class="btn btn-primary">게시</button>
+								<input type="text" class="form-control" id="commentInput${post.id }">
+								<button type="button" class="btn btn-primary comment-btn" data-post-id="${post.id }">게시</button>
 							</div>
 						</div>
 						
@@ -92,6 +92,39 @@
 	
 	<script>
 		$(document).ready(function() {
+			
+			
+			$(".comment-btn").on("click", function() {
+				
+				// post id, 작성한 댓글내용. 
+				let postId = $(this).data("post-id");
+				
+				// 버튼의 이전 태그를 객체화 
+				//let comment = $(this).prev().val();
+				//alert(comment);
+				
+				// id 셀렉터를 문자열 연산으로 완성
+				let comment = $("#commentInput" + postId).val();
+				
+				$.ajax({
+					type:"post"
+					, url:"/post/comment/create"
+					, data:{"postId":postId, "content":comment}
+					, success:function(data) {
+						if(data.result == "success") {
+							location.reload();
+						} else {
+							
+							alert("댓글 작성 실패");
+						}
+					}
+					, error:function() {
+						alert("댓글 작성 에러");
+					}
+				});
+				
+				
+			});
 			
 			
 			$(".heart-btn").on("click", function() {
