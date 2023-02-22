@@ -1,5 +1,10 @@
 package com.marondal.marondalgram.post.model;
 
+import java.util.List;
+
+import com.marondal.marondalgram.post.comment.model.Comment;
+import com.marondal.marondalgram.post.comment.model.CommentDetail;
+
 public class PostDetail {
 	
 	private int id;
@@ -9,7 +14,15 @@ public class PostDetail {
 	private String imagePath;
 	private int likeCount;
 	private boolean isLike;
+	private List<CommentDetail> commentList;
 	
+	
+	public List<CommentDetail> getCommentList() {
+		return commentList;
+	}
+	public void setCommentList(List<CommentDetail> commentList) {
+		this.commentList = commentList;
+	}
 	public boolean isLike() {
 		return isLike;
 	}

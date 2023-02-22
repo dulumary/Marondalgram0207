@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.marondal.marondalgram.common.FileManagerService;
+import com.marondal.marondalgram.post.comment.bo.CommentBO;
+import com.marondal.marondalgram.post.comment.model.CommentDetail;
 import com.marondal.marondalgram.post.dao.PostDAO;
 import com.marondal.marondalgram.post.like.bo.LikeBO;
 import com.marondal.marondalgram.post.model.Post;
@@ -27,6 +29,9 @@ public class PostBO {
 	@Autowired
 	private LikeBO likeBO;
 	
+	@Autowired
+	private CommentBO commentBO;
+	
 	public int addPost(int userId, String content, MultipartFile file) {
 		// 파일을 저장하고, 접근 경로를 만든다. 
 		
@@ -44,23 +49,24 @@ public class PostBO {
 		List<PostDetail> postDetailList = new ArrayList<>();
 		for(Post post:postList) {
 			// postDetail 객체를 생성하고, post 객체의 정보를 저장한다.
+			
 			PostDetail postDetail = new PostDetail();
+			User user = userBO.getUserById(post.getUserId());
+			// 좋아요 개수 조회 
+			int likeCount = likeBO.likeCount(post.getId());
+			// 좋아요 여부 조회
+			boolean isLike = likeBO.isLike(post.getId(), userId);
+			
+			List<CommentDetail> commentList = commentBO.getCommentList(post.getId());
+			
 			postDetail.setId(post.getId());
 			postDetail.setUserId(post.getUserId());
 			postDetail.setContent(post.getContent());
 			postDetail.setImagePath(post.getImagePath());
-			
-			User user = userBO.getUserById(post.getUserId());
-			// 좋아요 개수 조회 
-			int likeCount = likeBO.likeCount(post.getId());
-			
-			// 좋아요 여부 조회
-			boolean isLike = likeBO.isLike(post.getId(), userId);
 			postDetail.setLike(isLike);
-			
 			postDetail.setLikeCount(likeCount);
-			// userName 값을 저장한다. 
 			postDetail.setUserName(user.getName());
+			postDetail.setCommentList(commentList);
 			
 			postDetailList.add(postDetail);
 		}
