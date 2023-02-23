@@ -41,7 +41,8 @@
 					<div class="card mt-4">
 						<div class="d-flex justify-content-between p-2">
 							<div>${post.userName }</div>
-							<div><i class="bi bi-three-dots"></i></div>
+							<!-- data-toggle="modal" data-target="#exampleModalCenter"  -->
+							<div ><i class="bi bi-three-dots"></i></div>
 						</div>
 						<div>
 							<img width="100%" src="${post.imagePath }">
@@ -50,7 +51,7 @@
 						<div class="p-2">
 							<c:choose>
 								<c:when test="${post.like }">
-									<i class="bi bi-heart-fill text-danger"></i>
+									<i class="bi bi-heart-fill text-danger heart-fill-btn" data-post-id="${post.id }"></i>
 								</c:when>
 								<c:otherwise>
 									<i class="bi bi-heart heart-btn" data-post-id="${post.id }"></i>
@@ -98,11 +99,48 @@
 		</section>
 		<c:import url="/WEB-INF/jsp/include/footer.jsp" />
 		
+
 	
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	     
+	      <div class="modal-body text-center">
+	        	<a href="#">삭제하기</a>
+	      </div>
+	      
+	    </div>
+	  </div>
 	</div>
 	
 	<script>
 		$(document).ready(function() {
+			
+			$(".heart-fill-btn").on("click", function() {
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get"
+					, url:"/post/unlike"
+					, data:{"postId":postId}
+					, success:function(data) {
+						if(data.result == "success") {
+							location.reload();
+						} else {
+							
+							alert("좋아요 취소 실패");
+						}
+						
+					}
+					, error:function() {
+						alert("좋아요 취소 에러");
+					}
+				});
+				
+			});
 			
 			
 			$(".comment-btn").on("click", function() {
