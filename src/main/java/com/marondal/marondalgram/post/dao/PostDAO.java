@@ -20,5 +20,13 @@ public interface PostDAO {
 	public int insertLike(
 			@Param("userId") int userId
 			, @Param("postId") int postId);
+	
+	public Post selectPost(@Param("postId") int postId);
+	
+	public int deletePost(
+			@Param("postId") int postId
+			, @Param("userId") int userId);
+	
+	
 
 }

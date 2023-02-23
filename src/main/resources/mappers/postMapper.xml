@@ -43,5 +43,31 @@
 	
 	
 	</select>
+	
+	<select id="selectPost" parameterType="int" 
+	 resultType="com.marondal.marondalgram.post.model.Post">
+	 	SELECT 
+			`id`
+			,`userId`
+			, `content`
+			, `imagePath`
+			, `createdAt`
+			, `updatedAt`
+		FROM 
+			`post`
+		WHERE
+			`id` = #{postId}
+	
+	</select>
+	
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM 
+			`post`
+		WHERE 
+			`id` = #{postId}
+			AND `userId` = #{userId}
+	
+	</delete>
+	
 
 </mapper>

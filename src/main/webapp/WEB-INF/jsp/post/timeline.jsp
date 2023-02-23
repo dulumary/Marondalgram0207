@@ -41,8 +41,12 @@
 					<div class="card mt-4">
 						<div class="d-flex justify-content-between p-2">
 							<div>${post.userName }</div>
-							<!-- data-toggle="modal" data-target="#exampleModalCenter"  -->
-							<div ><i class="bi bi-three-dots"></i></div>
+							
+							<%-- 로그인한 userId와 해당 게시글의 작성자 userId 가 일치하는 경우만 more-btn을 보여줘라 --%>
+							<c:if test="${userId eq post.userId }">
+								<!--   -->
+								<div class="more-btn" data-toggle="modal" data-target="#moreMenuModal" data-post-id="${post.id }"><i class="bi bi-three-dots"></i></div>
+							</c:if>
 						</div>
 						<div>
 							<img width="100%" src="${post.imagePath }">
@@ -104,12 +108,12 @@
 	</div>
 	
 	<!-- Modal -->
-	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal fade" id="moreMenuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 	    <div class="modal-content">
 	     
 	      <div class="modal-body text-center">
-	        	<a href="#">삭제하기</a>
+	        	<a href="#" id="deleteBtn">삭제하기</a>
 	      </div>
 	      
 	    </div>
@@ -118,6 +122,38 @@
 	
 	<script>
 		$(document).ready(function() {
+			
+			$(".more-btn").on("click", function() {
+				// 해당 more-btn 태그에있는 post-id를 모달의 a태그에 넣는다. 
+				let postId = $(this).data("post-id");
+				
+				
+				// data-post-id=""
+				$("#deleteBtn").data("post-id", postId);
+				
+				
+			});
+			
+			$("#deleteBtn").on("click", function() {
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get"
+					, url:"/post/delete"
+					, data:{"postId":postId}
+					, success:function(data) {
+						if(data.result == "success") {
+							location.reload();
+						} else {
+							alert("삭제 실패");
+						}
+						
+					}
+					, error :function() {
+						alert("삭제 에러");
+					}
+				});
+			});
 			
 			$(".heart-fill-btn").on("click", function() {
 				let postId = $(this).data("post-id");
